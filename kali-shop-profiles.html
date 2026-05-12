@@ -1,0 +1,2397 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kali Shop</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080b14;
+    --bg2: #0d1220;
+    --bg3: #121826;
+    --bg4: #1a2236;
+    --panel: #0f1520;
+    --border: #1e2d47;
+    --border2: #2a3f60;
+    --gold: #c9a84c;
+    --gold2: #e8c56a;
+    --gold3: #ffd97d;
+    --teal: #00b4a0;
+    --teal2: #00d4be;
+    --red: #e05252;
+    --red2: #ff6b6b;
+    --green: #4caf82;
+    --green2: #5ecf99;
+    --purple: #7c5cbf;
+    --purple2: #9b7de0;
+    --text: #c8d8f0;
+    --text2: #8aa0c0;
+    --text3: #4a6080;
+    --sidebar-w: 220px;
+    --radius: 8px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Rajdhani', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    overflow: hidden;
+  }
+
+  /* SIDEBAR */
+  #sidebar {
+    width: var(--sidebar-w);
+    min-width: var(--sidebar-w);
+    background: var(--panel);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow-y: auto;
+    position: fixed;
+    left: 0; top: 0; bottom: 0;
+    z-index: 100;
+  }
+
+  .sidebar-logo {
+    padding: 20px 16px 16px;
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+  }
+  .sidebar-logo h1 {
+    font-family: 'Cinzel', serif;
+    font-size: 1.4rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--gold), var(--gold3));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 2px;
+  }
+  .sidebar-logo span {
+    font-size: 0.65rem;
+    color: var(--text3);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  .sidebar-section {
+    padding: 10px 10px 4px;
+    font-size: 0.6rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text3);
+    font-weight: 600;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    margin: 1px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text2);
+    transition: all 0.15s;
+    border: 1px solid transparent;
+  }
+  .nav-item:hover { background: var(--bg4); color: var(--text); }
+  .nav-item.active {
+    background: linear-gradient(135deg, rgba(201,168,76,0.15), rgba(0,180,160,0.08));
+    border-color: rgba(201,168,76,0.3);
+    color: var(--gold2);
+  }
+  .nav-item .icon { font-size: 0.9rem; width: 18px; text-align: center; }
+  .nav-badge {
+    margin-left: auto;
+    background: var(--teal);
+    color: #000;
+    font-size: 0.55rem;
+    font-weight: 700;
+    padding: 1px 5px;
+    border-radius: 10px;
+    min-width: 16px;
+    text-align: center;
+  }
+
+  /* MAIN */
+  #main {
+    margin-left: var(--sidebar-w);
+    flex: 1;
+    height: 100vh;
+    overflow-y: auto;
+    background: var(--bg);
+    padding: 24px;
+  }
+
+  .page { display: none; }
+  .page.active { display: block; }
+
+  .page-title {
+    font-family: 'Cinzel', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--gold2);
+    margin-bottom: 4px;
+    letter-spacing: 1px;
+  }
+  .page-sub {
+    font-size: 0.8rem;
+    color: var(--text3);
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+  }
+
+  /* CARDS / PANELS */
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  .card-title {
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    font-weight: 600;
+  }
+
+  /* GRID */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+
+  /* INPUTS */
+  input, select, textarea {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.85rem;
+    padding: 8px 12px;
+    width: 100%;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 2px rgba(201,168,76,0.1);
+  }
+  input[type="checkbox"] {
+    width: auto;
+    accent-color: var(--gold);
+    width: 16px; height: 16px;
+    cursor: pointer;
+  }
+  label { font-size: 0.75rem; color: var(--text2); margin-bottom: 4px; display: block; letter-spacing: 0.5px; }
+  .form-group { margin-bottom: 12px; }
+
+  /* BUTTONS */
+  .btn {
+    padding: 8px 18px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: all 0.15s;
+  }
+  .btn-gold {
+    background: linear-gradient(135deg, var(--gold), var(--gold3));
+    color: #0d0a00;
+  }
+  .btn-gold:hover { filter: brightness(1.1); transform: translateY(-1px); }
+  .btn-teal {
+    background: var(--teal);
+    color: #000;
+  }
+  .btn-teal:hover { background: var(--teal2); }
+  .btn-red {
+    background: transparent;
+    border: 1px solid var(--red);
+    color: var(--red);
+  }
+  .btn-red:hover { background: var(--red); color: #fff; }
+  .btn-ghost {
+    background: transparent;
+    border: 1px solid var(--border2);
+    color: var(--text2);
+  }
+  .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+  .btn-green {
+    background: var(--green);
+    color: #000;
+  }
+  .btn-green:hover { background: var(--green2); }
+  .btn-purple {
+    background: var(--purple);
+    color: #fff;
+  }
+  .btn-purple:hover { background: var(--purple2); }
+  .btn-sm { padding: 5px 12px; font-size: 0.75rem; }
+  .btn-xs { padding: 3px 8px; font-size: 0.7rem; }
+
+  /* TABLES */
+  .tbl { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+  .tbl th {
+    background: var(--bg4);
+    padding: 8px 12px;
+    text-align: left;
+    font-size: 0.65rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text3);
+    font-weight: 600;
+    border-bottom: 1px solid var(--border);
+  }
+  .tbl td {
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+  .tbl tr:last-child td { border-bottom: none; }
+  .tbl tr:hover td { background: var(--bg4); }
+  .tbl-wrap { overflow-x: auto; }
+
+  /* STAT CARDS */
+  .stat-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    text-align: center;
+  }
+  .stat-val {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--gold2);
+  }
+  .stat-label {
+    font-size: 0.65rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-top: 4px;
+  }
+
+  /* CHIP */
+  .chip {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: 600;
+  }
+  .chip-gold { background: rgba(201,168,76,0.15); color: var(--gold2); border: 1px solid rgba(201,168,76,0.3); }
+  .chip-teal { background: rgba(0,180,160,0.15); color: var(--teal2); border: 1px solid rgba(0,180,160,0.3); }
+  .chip-red { background: rgba(224,82,82,0.15); color: var(--red2); border: 1px solid rgba(224,82,82,0.3); }
+  .chip-green { background: rgba(76,175,130,0.15); color: var(--green2); border: 1px solid rgba(76,175,130,0.3); }
+  .chip-purple { background: rgba(124,92,191,0.15); color: var(--purple2); border: 1px solid rgba(124,92,191,0.3); }
+
+  /* DIVIDER */
+  .divider { height: 1px; background: var(--border); margin: 16px 0; }
+
+  /* FLEX */
+  .flex { display: flex; }
+  .flex-center { align-items: center; }
+  .flex-between { justify-content: space-between; }
+  .gap-8 { gap: 8px; }
+  .gap-12 { gap: 12px; }
+  .gap-16 { gap: 16px; }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+  /* CHECKBOX ROW */
+  .check-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: var(--bg3);
+    border-radius: 6px;
+    margin-bottom: 6px;
+    border: 1px solid var(--border);
+    transition: all 0.15s;
+  }
+  .check-row.done {
+    opacity: 0.5;
+    text-decoration: line-through;
+  }
+  .check-row input[type="checkbox"] { flex-shrink: 0; }
+
+  /* EMPTY STATE */
+  .empty {
+    text-align: center;
+    padding: 40px;
+    color: var(--text3);
+    font-size: 0.85rem;
+  }
+  .empty-icon { font-size: 2.5rem; margin-bottom: 8px; }
+
+  /* TOTAL PAGE */
+  .total-ring {
+    width: 140px; height: 140px;
+    border-radius: 50%;
+    border: 4px solid var(--gold);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    margin: 0 auto 20px;
+    box-shadow: 0 0 30px rgba(201,168,76,0.3);
+  }
+
+  /* NOTIFICATION */
+  #notif {
+    position: fixed;
+    top: 20px; right: 20px;
+    background: var(--bg4);
+    border: 1px solid var(--gold);
+    color: var(--gold2);
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    z-index: 9999;
+    display: none;
+    animation: slideIn 0.2s ease;
+  }
+  @keyframes slideIn { from { transform: translateX(20px); opacity:0; } to { transform: translateX(0); opacity:1; } }
+
+  /* ITEM LIST in Calculator */
+  .calc-list-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: var(--bg3);
+    border-radius: 6px;
+    margin-bottom: 6px;
+    border: 1px solid var(--border);
+    font-size: 0.82rem;
+  }
+  .priority-badge {
+    background: var(--gold);
+    color: #000;
+    font-size: 0.6rem;
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-weight: 700;
+  }
+
+  /* Trade columns */
+  .trade-col {
+    flex: 1;
+    background: var(--bg3);
+    border-radius: 8px;
+    padding: 14px;
+    border: 1px solid var(--border);
+  }
+  .trade-col-title {
+    font-size: 0.7rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+  .mine { border-top: 2px solid var(--gold); }
+  .mine .trade-col-title { color: var(--gold2); }
+  .theirs { border-top: 2px solid var(--teal); }
+  .theirs .trade-col-title { color: var(--teal2); }
+
+  @media (max-width: 900px) {
+    :root { --sidebar-w: 200px; }
+    .grid-4 { grid-template-columns: repeat(2,1fr); }
+    .grid-3 { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* ===== PROFILE SCREEN ===== */
+  #profile-screen {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    z-index: 9000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  #profile-screen.hidden { display: none; }
+
+  .profile-header {
+    text-align: center;
+    margin-bottom: 36px;
+  }
+  .profile-header h1 {
+    font-family: 'Cinzel', serif;
+    font-size: 2.2rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--gold), var(--gold3));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 3px;
+    margin-bottom: 6px;
+  }
+  .profile-header p {
+    font-size: 0.75rem;
+    color: var(--text3);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  .profile-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 14px;
+    max-width: 720px;
+    width: 100%;
+    margin-bottom: 24px;
+  }
+
+  .profile-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 14px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.18s;
+    position: relative;
+  }
+  .profile-card:hover {
+    border-color: var(--gold);
+    background: var(--bg4);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(201,168,76,0.15);
+  }
+  .profile-avatar {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), var(--teal));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+    margin: 0 auto 10px;
+    border: 2px solid var(--border2);
+    font-weight: 700;
+    color: #000;
+    font-family: 'Cinzel', serif;
+  }
+  .profile-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+    word-break: break-word;
+  }
+  .profile-info {
+    font-size: 0.65rem;
+    color: var(--text3);
+    letter-spacing: 1px;
+  }
+  .profile-delete {
+    position: absolute;
+    top: 6px; right: 8px;
+    background: transparent;
+    border: none;
+    color: var(--text3);
+    cursor: pointer;
+    font-size: 0.75rem;
+    padding: 2px 5px;
+    border-radius: 4px;
+    opacity: 0;
+    transition: all 0.15s;
+  }
+  .profile-card:hover .profile-delete { opacity: 1; }
+  .profile-delete:hover { background: var(--red); color: #fff; }
+
+  .profile-new {
+    background: transparent;
+    border: 1px dashed var(--border2);
+    border-radius: 10px;
+    padding: 20px 14px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.18s;
+    color: var(--text3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 100px;
+    font-size: 0.8rem;
+  }
+  .profile-new:hover {
+    border-color: var(--gold);
+    color: var(--gold2);
+    background: rgba(201,168,76,0.05);
+  }
+  .profile-new-icon { font-size: 1.8rem; }
+
+  .profile-create-form {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 340px;
+    width: 100%;
+    display: none;
+    margin-top: 8px;
+  }
+  .profile-create-form.visible { display: block; }
+  .profile-create-form h3 {
+    font-family: 'Cinzel', serif;
+    color: var(--gold2);
+    font-size: 0.95rem;
+    margin-bottom: 14px;
+    letter-spacing: 1px;
+  }
+
+  /* Profile badge in sidebar */
+  .sidebar-profile {
+    padding: 10px 14px;
+    margin: 8px 8px 4px;
+    background: var(--bg4);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .sidebar-profile:hover { border-color: var(--gold); }
+  .sidebar-profile-avatar {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), var(--teal));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #000;
+    font-family: 'Cinzel', serif;
+    flex-shrink: 0;
+  }
+  .sidebar-profile-name {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text);
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .sidebar-profile-switch {
+    font-size: 0.6rem;
+    color: var(--text3);
+    letter-spacing: 1px;
+  }
+</style>
+</head>
+<body>
+
+<div id="notif"></div>
+
+<!-- ===== PROFILE SCREEN ===== -->
+<div id="profile-screen">
+  <div class="profile-header">
+    <h1>⚔ KALI SHOP</h1>
+    <p>Selecione ou crie seu perfil</p>
+  </div>
+
+  <div class="profile-grid" id="profile-grid">
+    <!-- profiles rendered here -->
+  </div>
+
+  <div class="profile-create-form" id="profile-create-form">
+    <h3>✦ Novo Perfil</h3>
+    <div class="form-group">
+      <label>Nome do Perfil</label>
+      <input id="new-profile-name" type="text" placeholder="Ex: Kali, Xandre, Loja 2..." maxlength="20"
+        onkeydown="if(event.key==='Enter')createProfile()">
+    </div>
+    <div style="display:flex;gap:8px;margin-top:4px">
+      <button class="btn btn-gold" onclick="createProfile()" style="flex:1">Criar</button>
+      <button class="btn btn-ghost" onclick="cancelCreateProfile()" style="flex:1">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- SIDEBAR -->
+<nav id="sidebar" style="display:none">
+  <div class="sidebar-logo">
+    <h1>⚔ KALI SHOP</h1>
+    <span>Sistema de Gestão</span>
+  </div>
+
+  <div class="sidebar-profile" onclick="showProfileScreen()" title="Trocar perfil">
+    <div class="sidebar-profile-avatar" id="sidebar-avatar">K</div>
+    <div>
+      <div class="sidebar-profile-name" id="sidebar-profile-name">Perfil</div>
+      <div class="sidebar-profile-switch">TROCAR PERFIL</div>
+    </div>
+  </div>
+
+  <div class="sidebar-section">Registros</div>
+  <div class="nav-item active" onclick="goTo('reg-items')"><span class="icon">📦</span>Registro de Itens</div>
+  <div class="nav-item" onclick="goTo('reg-trade')"><span class="icon">🔄</span>Registro Trocas</div>
+  <div class="nav-item" onclick="goTo('estoque')"><span class="icon">🏪</span>Estoque</div>
+
+  <div class="sidebar-section">Calculadora</div>
+  <div class="nav-item" onclick="goTo('calc-venda')"><span class="icon">🧮</span>Calc. Vendas</div>
+  <div class="nav-item" onclick="goTo('calc-troca')"><span class="icon">⚖️</span>Calc. Trocas</div>
+
+  <div class="sidebar-section">Operações</div>
+  <div class="nav-item" onclick="goTo('vendas')"><span class="icon">💰</span>Registro Vendas</div>
+  <div class="nav-item" onclick="goTo('trocas')"><span class="icon">🤝</span>Registro Trocas<span id="badge-trocas" class="nav-badge" style="display:none">0</span></div>
+
+  <div class="sidebar-section">Produção</div>
+  <div class="nav-item" onclick="goTo('farm-venda')"><span class="icon">⛏️</span>Farm / Fab. Venda</div>
+  <div class="nav-item" onclick="goTo('farm-troca')"><span class="icon">🌾</span>Farm / Fab. Troca</div>
+
+  <div class="sidebar-section">Entregas</div>
+  <div class="nav-item" onclick="goTo('entrega-venda')"><span class="icon">📬</span>Entrega Venda</div>
+  <div class="nav-item" onclick="goTo('entrega-troca')"><span class="icon">📮</span>Entrega Troca</div>
+
+  <div class="sidebar-section">Histórico</div>
+  <div class="nav-item" onclick="goTo('hist-vendas')"><span class="icon">📜</span>Histórico Vendas</div>
+  <div class="nav-item" onclick="goTo('hist-trocas')"><span class="icon">📋</span>Histórico Trocas</div>
+
+  <div class="sidebar-section">Resumo</div>
+  <div class="nav-item" onclick="goTo('total')"><span class="icon">📊</span>Total</div>
+
+  <div class="sidebar-section">Dados</div>
+  <div class="nav-item" onclick="exportarDados()"><span class="icon">💾</span>Exportar Backup</div>
+  <div class="nav-item" onclick="importarDados()"><span class="icon">📂</span>Importar Backup</div>
+  <div class="nav-item" onclick="resetarDados()" style="color:var(--red2);margin-bottom:8px;"><span class="icon">🗑️</span>Resetar Tudo</div>
+
+</nav>
+
+<!-- MAIN -->
+<main id="main" style="display:none">
+
+<!-- ===================== REGISTRO DE ITENS ===================== -->
+<div class="page active" id="page-reg-items">
+  <div class="page-title">📦 Registro de Itens</div>
+  <div class="page-sub">CADASTRE SEUS ITENS COM VALOR E QUANTIDADE DE FARM</div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Novo Item</div>
+      <div class="form-group">
+        <label>Nome do Item</label>
+        <input id="ri-nome" type="text" placeholder="Ex: Espada Lendária">
+      </div>
+      <div class="form-group">
+        <label>Quantidade de Farm (por unidade)</label>
+        <input id="ri-farm" type="number" placeholder="Ex: 50" min="0">
+      </div>
+      <div class="form-group">
+        <label>Valor (por unidade)</label>
+        <input id="ri-valor" type="number" placeholder="Ex: 1000000" min="0">
+      </div>
+      <div class="form-group">
+        <label>Tipo de Farm</label>
+        <input id="ri-unidade" type="text" placeholder="Ex: Madeira, Minério, Erva...">
+      </div>
+      <button class="btn btn-gold" onclick="addItem()">+ Cadastrar Item</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Itens Cadastrados</div>
+      <div id="ri-list">
+        <div class="empty"><div class="empty-icon">📦</div>Nenhum item cadastrado</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== REGISTRO TROCAS ===================== -->
+<div class="page" id="page-reg-trade">
+  <div class="page-title">🔄 Registro de Itens para Troca</div>
+  <div class="page-sub">ITENS QUE VOCÊ ACEITA EM TROCA COM SEUS VALORES</div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Novo Item para Troca</div>
+      <div class="form-group">
+        <label>Nome do Item</label>
+        <input id="rt-nome" type="text" placeholder="Ex: Poção Rara">
+      </div>
+      <div class="form-group">
+        <label>Valor do Item</label>
+        <input id="rt-valor" type="number" placeholder="Ex: 500000" min="0">
+      </div>
+      <div class="form-group">
+        <label>Categoria (opcional)</label>
+        <input id="rt-cat" type="text" placeholder="Ex: Consumível, Equipamento...">
+      </div>
+      <button class="btn btn-teal" onclick="addTradeItem()">+ Cadastrar Item Troca</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Itens Aceitos para Troca</div>
+      <div id="rt-list">
+        <div class="empty"><div class="empty-icon">🔄</div>Nenhum item cadastrado</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== ESTOQUE ===================== -->
+<div class="page" id="page-estoque">
+  <div class="page-title">🏪 Estoque</div>
+  <div class="page-sub">CONTROLE SEU INVENTÁRIO</div>
+
+  <div class="card" style="margin-bottom:16px;">
+    <div class="card-title">Adicionar ao Estoque</div>
+    <div class="flex gap-12 flex-center">
+      <div style="flex:2">
+        <label>Item</label>
+        <select id="est-item">
+          <option value="">Selecione um item...</option>
+        </select>
+      </div>
+      <div style="flex:1">
+        <label>Quantidade</label>
+        <input id="est-qtd" type="number" placeholder="0" min="0">
+      </div>
+      <div style="margin-top:18px;">
+        <button class="btn btn-gold" onclick="addEstoque()">+ Adicionar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Inventário Atual</div>
+    <div id="est-list">
+      <div class="empty"><div class="empty-icon">🏪</div>Estoque vazio</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== CALCULADORA VENDAS ===================== -->
+<div class="page" id="page-calc-venda">
+  <div class="page-title">🧮 Calculadora de Vendas</div>
+  <div class="page-sub">CALCULE QUANTIDADE OU VALOR PARA SEUS CLIENTES</div>
+
+  <div class="card" style="margin-bottom:16px;">
+    <div class="card-title">Dados do Cliente</div>
+    <div class="grid-2">
+      <div class="form-group">
+        <label>Nome do Cliente</label>
+        <input id="cv-cliente" type="text" placeholder="Nome...">
+      </div>
+      <div class="form-group">
+        <label>ID do Cliente</label>
+        <input id="cv-id" type="text" placeholder="ID...">
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Calcular por Valor Disponível</div>
+      <div class="form-group">
+        <label>Valor que o cliente tem</label>
+        <input id="cv-budget" type="number" placeholder="Ex: 15000000">
+      </div>
+      <div class="form-group">
+        <label>Selecionar Item</label>
+        <select id="cv-item-sel">
+          <option value="">Selecione...</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Desconto (%)</label>
+        <input id="cv-desc" type="number" placeholder="0" min="0" max="100">
+      </div>
+      <button class="btn btn-gold" onclick="calcVenda()">Calcular</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Resultado</div>
+      <div id="cv-result">
+        <div class="empty"><div class="empty-icon">🧮</div>Preencha os campos e calcule</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Lista de Itens da Calculadora</div>
+    <div style="margin-bottom:12px;" class="flex gap-8 flex-center">
+      <select id="cv-add-item" style="flex:2">
+        <option value="">Adicionar item à lista...</option>
+      </select>
+      <input id="cv-add-qtd" type="number" placeholder="Qtd" style="flex:1" min="1">
+      <button class="btn btn-ghost btn-sm" onclick="addCalcVendaItem()">Adicionar</button>
+    </div>
+    <div id="cv-item-list"></div>
+    <div id="cv-total-result" style="margin-top:12px;"></div>
+    <div class="flex gap-8" style="margin-top:12px;">
+      <button class="btn btn-green" onclick="moveCalcToVenda()">→ Mover para Venda</button>
+      <button class="btn btn-ghost" onclick="clearCalcVenda()">Limpar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== CALCULADORA TROCAS ===================== -->
+<div class="page" id="page-calc-troca">
+  <div class="page-title">⚖️ Calculadora de Trocas</div>
+  <div class="page-sub">CALCULE TROCAS EQUILIBRADAS COM PRIORIDADES</div>
+
+  <div class="card" style="margin-bottom:16px;">
+    <div class="card-title">Dados do Player</div>
+    <div class="grid-2">
+      <div class="form-group">
+        <label>Nome do Player</label>
+        <input id="ct-player" type="text" placeholder="Nome...">
+      </div>
+      <div class="form-group">
+        <label>ID do Player</label>
+        <input id="ct-id" type="text" placeholder="ID...">
+      </div>
+    </div>
+  </div>
+
+  <div class="flex gap-16" style="margin-bottom:16px;">
+    <!-- MEUS ITENS -->
+    <div class="trade-col mine">
+      <div class="trade-col-title">⚔ Meus Itens</div>
+      <div class="flex gap-8 flex-center" style="margin-bottom:10px;">
+        <select id="ct-my-item" style="flex:2">
+          <option value="">Selecione meu item...</option>
+        </select>
+        <input id="ct-my-qtd" type="number" placeholder="Qtd" style="flex:1" min="1">
+        <label style="margin:0;display:flex;align-items:center;gap:4px;white-space:nowrap;font-size:0.7rem;">
+          <input type="checkbox" id="ct-my-prio"> Prioridade
+        </label>
+        <input id="ct-my-prio-val" type="text" placeholder="+%" style="width:60px;flex-shrink:0;">
+        <button class="btn btn-gold btn-sm" onclick="addCtMyItem()">+</button>
+      </div>
+      <div id="ct-my-list"></div>
+    </div>
+
+    <!-- ITENS DO PLAYER -->
+    <div class="trade-col theirs">
+      <div class="trade-col-title">👤 Itens do Player</div>
+      <div class="flex gap-8 flex-center" style="margin-bottom:10px;">
+        <select id="ct-their-item" style="flex:2">
+          <option value="">Selecione item deles...</option>
+        </select>
+        <input id="ct-their-qtd" type="number" placeholder="Qtd" style="flex:1" min="1">
+        <label style="margin:0;display:flex;align-items:center;gap:4px;white-space:nowrap;font-size:0.7rem;">
+          <input type="checkbox" id="ct-their-prio"> Prioridade
+        </label>
+        <input id="ct-their-prio-val" type="text" placeholder="+%" style="width:60px;flex-shrink:0;">
+        <button class="btn btn-teal btn-sm" onclick="addCtTheirItem()">+</button>
+      </div>
+      <div id="ct-their-list"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Análise da Troca</div>
+    <button class="btn btn-gold" onclick="calcTroca()" style="margin-bottom:14px;">Calcular Troca</button>
+    <div id="ct-result">
+      <div class="empty"><div class="empty-icon">⚖️</div>Adicione itens e calcule</div>
+    </div>
+    <div class="flex gap-8" style="margin-top:12px;">
+      <button class="btn btn-green" onclick="moveCalcToTroca()">→ Mover para Farm Troca</button>
+      <button class="btn btn-ghost" onclick="clearCalcTroca()">Limpar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== VENDAS ===================== -->
+<div class="page" id="page-vendas">
+  <div class="page-title">💰 Registro de Vendas</div>
+  <div class="page-sub">REGISTRE E GERENCIE SUAS VENDAS</div>
+
+  <div class="card">
+    <div class="card-title">Nova Venda</div>
+    <div class="grid-2">
+      <div class="form-group">
+        <label>Nome do Cliente</label>
+        <input id="v-cliente" type="text" placeholder="Nome...">
+      </div>
+      <div class="form-group">
+        <label>ID do Cliente</label>
+        <input id="v-id" type="text" placeholder="ID...">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Adicionar Item à Venda</label>
+      <div class="flex gap-8 flex-center">
+        <select id="v-item-sel" style="flex:2">
+          <option value="">Selecione item...</option>
+        </select>
+        <input id="v-item-qtd" type="number" placeholder="Qtd" style="flex:1" min="1">
+        <button class="btn btn-ghost btn-sm" onclick="addVendaItem()">Adicionar</button>
+      </div>
+    </div>
+
+    <div id="v-items-list" style="margin-bottom:12px;"></div>
+
+    <div class="grid-3">
+      <div class="form-group">
+        <label>Desconto no Total (%)</label>
+        <input id="v-desc-total" type="number" placeholder="0" min="0" max="100" oninput="recalcVenda()">
+      </div>
+      <div>
+        <div style="font-size:0.75rem;color:var(--text2);margin-bottom:4px;">Subtotal</div>
+        <div id="v-subtotal" style="font-family:'Orbitron',monospace;font-size:1.1rem;color:var(--gold2);">—</div>
+      </div>
+      <div>
+        <div style="font-size:0.75rem;color:var(--text2);margin-bottom:4px;">Total c/ Desconto</div>
+        <div id="v-total-final" style="font-family:'Orbitron',monospace;font-size:1.1rem;color:var(--green2);">—</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Farm Total Necessário</label>
+      <div id="v-farm-total" style="font-size:0.9rem;color:var(--text2);">—</div>
+    </div>
+
+    <button class="btn btn-gold" onclick="finalizarVenda()">✓ Finalizar Venda → Farm</button>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Vendas em Aberto</div>
+    <div id="v-open-list">
+      <div class="empty"><div class="empty-icon">💰</div>Nenhuma venda em aberto</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== TROCAS ===================== -->
+<div class="page" id="page-trocas">
+  <div class="page-title">🤝 Registro de Trocas</div>
+  <div class="page-sub">REGISTRE SUAS TROCAS</div>
+
+  <div class="card">
+    <div class="card-title">Nova Troca</div>
+    <div class="grid-2">
+      <div class="form-group">
+        <label>Nome do Player</label>
+        <input id="tr-player" type="text" placeholder="Nome...">
+      </div>
+      <div class="form-group">
+        <label>ID do Player</label>
+        <input id="tr-id" type="text" placeholder="ID...">
+      </div>
+    </div>
+
+    <div class="flex gap-16">
+      <div style="flex:1">
+        <div class="card-title" style="border:none;padding:0;margin-bottom:8px;">Meus Itens</div>
+        <div class="flex gap-8 flex-center" style="margin-bottom:8px;">
+          <select id="tr-my-sel" style="flex:2">
+            <option value="">Meu item...</option>
+          </select>
+          <input id="tr-my-qtd" type="number" placeholder="Qtd" style="flex:1" min="1">
+          <button class="btn btn-gold btn-sm" onclick="addTrocaMy()">+</button>
+        </div>
+        <div id="tr-my-list"></div>
+      </div>
+      <div style="flex:1">
+        <div class="card-title" style="border:none;padding:0;margin-bottom:8px;">Itens do Player</div>
+        <div class="flex gap-8 flex-center" style="margin-bottom:8px;">
+          <select id="tr-their-sel" style="flex:2">
+            <option value="">Item deles...</option>
+          </select>
+          <input id="tr-their-qtd" type="number" placeholder="Qtd" style="flex:1" min="1">
+          <button class="btn btn-teal btn-sm" onclick="addTrocaTheir()">+</button>
+        </div>
+        <div id="tr-their-list"></div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <div id="tr-balance" style="font-size:0.85rem;color:var(--text2);margin-bottom:12px;"></div>
+    <button class="btn btn-gold" onclick="finalizarTroca()">✓ Confirmar Troca → Farm</button>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Trocas em Aberto</div>
+    <div id="tr-open-list">
+      <div class="empty"><div class="empty-icon">🤝</div>Nenhuma troca em aberto</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== FARM / FAB VENDA ===================== -->
+<div class="page" id="page-farm-venda">
+  <div class="page-title">⛏️ Farmando & Fabricação — Vendas</div>
+  <div class="page-sub">MARQUE OS ITENS CONFORME FARMA E FABRICA</div>
+  <div id="fv-list">
+    <div class="empty"><div class="empty-icon">⛏️</div>Nenhuma encomenda de venda em produção</div>
+  </div>
+</div>
+
+<!-- ===================== FARM / FAB TROCA ===================== -->
+<div class="page" id="page-farm-troca">
+  <div class="page-title">🌾 Farmando & Fabricação — Trocas</div>
+  <div class="page-sub">MARQUE OS ITENS CONFORME FARMA E FABRICA</div>
+  <div id="ft-list">
+    <div class="empty"><div class="empty-icon">🌾</div>Nenhuma troca em produção</div>
+  </div>
+</div>
+
+<!-- ===================== ENTREGA VENDA ===================== -->
+<div class="page" id="page-entrega-venda">
+  <div class="page-title">📬 Entrega — Vendas</div>
+  <div class="page-sub">MARQUE QUANDO ENTREGAR AO CLIENTE</div>
+  <div id="ev-list">
+    <div class="empty"><div class="empty-icon">📬</div>Nenhuma venda aguardando entrega</div>
+  </div>
+</div>
+
+<!-- ===================== ENTREGA TROCA ===================== -->
+<div class="page" id="page-entrega-troca">
+  <div class="page-title">📮 Entrega — Trocas</div>
+  <div class="page-sub">MARQUE QUANDO AMBAS ENTREGAS FOREM REALIZADAS</div>
+  <div id="et-list">
+    <div class="empty"><div class="empty-icon">📮</div>Nenhuma troca aguardando entrega</div>
+  </div>
+</div>
+
+<!-- ===================== HISTÓRICO VENDAS ===================== -->
+<div class="page" id="page-hist-vendas">
+  <div class="page-title">📜 Histórico de Vendas</div>
+  <div class="page-sub">TODAS AS VENDAS FINALIZADAS</div>
+
+  <div class="grid-3" style="margin-bottom:16px;">
+    <div class="stat-card">
+      <div class="stat-val" id="hv-total-vendas">0</div>
+      <div class="stat-label">Total de Vendas</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val" id="hv-total-valor">0</div>
+      <div class="stat-label">Total Faturado</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val" id="hv-media">0</div>
+      <div class="stat-label">Média por Venda</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div id="hv-list">
+      <div class="empty"><div class="empty-icon">📜</div>Nenhuma venda finalizada ainda</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== HISTÓRICO TROCAS ===================== -->
+<div class="page" id="page-hist-trocas">
+  <div class="page-title">📋 Histórico de Trocas</div>
+  <div class="page-sub">TODAS AS TROCAS FINALIZADAS</div>
+
+  <div class="stat-card" style="margin-bottom:16px;text-align:center;">
+    <div class="stat-val" id="ht-total">0</div>
+    <div class="stat-label">Total de Trocas Realizadas</div>
+  </div>
+
+  <div class="card">
+    <div id="ht-list">
+      <div class="empty"><div class="empty-icon">📋</div>Nenhuma troca finalizada ainda</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== TOTAL ===================== -->
+<div class="page" id="page-total">
+  <div class="page-title">📊 Dashboard Total</div>
+  <div class="page-sub">VISÃO GERAL DO SEU NEGÓCIO</div>
+
+  <div class="grid-4" style="margin-bottom:20px;">
+    <div class="stat-card">
+      <div class="stat-val" id="tot-faturamento" style="font-size:1.1rem;">0</div>
+      <div class="stat-label">Faturamento Total</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val" id="tot-vendas">0</div>
+      <div class="stat-label">Vendas Realizadas</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val" id="tot-trocas">0</div>
+      <div class="stat-label">Trocas Realizadas</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val" id="tot-itens">0</div>
+      <div class="stat-label">Itens Cadastrados</div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Produção em Andamento</div>
+      <div id="tot-producao"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Estoque Atual</div>
+      <div id="tot-estoque"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Últimas Transações</div>
+    <div id="tot-ultimas"></div>
+  </div>
+</div>
+
+</main>
+
+<script>
+// ============================
+// SISTEMA DE PERFIS
+// ============================
+const PROFILES_KEY = 'kalishop_profiles';
+const ACTIVE_PROFILE_KEY = 'kalishop_active_profile';
+
+function getProfiles() {
+  try {
+    return JSON.parse(localStorage.getItem(PROFILES_KEY) || '[]');
+  } catch(e) { return []; }
+}
+
+function saveProfiles(profiles) {
+  localStorage.setItem(PROFILES_KEY, JSON.stringify(profiles));
+}
+
+function getActiveProfileId() {
+  return localStorage.getItem(ACTIVE_PROFILE_KEY) || null;
+}
+
+function setActiveProfileId(id) {
+  localStorage.setItem(ACTIVE_PROFILE_KEY, id);
+}
+
+function getProfileLS(profileId) {
+  return 'kalishop_v1_' + profileId;
+}
+
+// Paleta de cores para avatars
+const AVATAR_COLORS = [
+  ['#c9a84c','#00b4a0'], ['#7c5cbf','#c9a84c'], ['#00b4a0','#7c5cbf'],
+  ['#e05252','#c9a84c'], ['#4caf82','#00b4a0'], ['#c9a84c','#e05252']
+];
+
+function profileAvatarStyle(idx) {
+  const [a,b] = AVATAR_COLORS[idx % AVATAR_COLORS.length];
+  return `background: linear-gradient(135deg, ${a}, ${b});`;
+}
+
+function profileInitials(name) {
+  return name.trim().slice(0,2).toUpperCase();
+}
+
+function renderProfileGrid() {
+  const profiles = getProfiles();
+  const grid = document.getElementById('profile-grid');
+  let html = '';
+  profiles.forEach((p, i) => {
+    const items = (() => {
+      try {
+        const d = JSON.parse(localStorage.getItem(getProfileLS(p.id)) || '{}');
+        return (d.items||[]).length;
+      } catch(e) { return 0; }
+    })();
+    const histV = (() => {
+      try {
+        const d = JSON.parse(localStorage.getItem(getProfileLS(p.id)) || '{}');
+        return (d.histVendas||[]).length;
+      } catch(e) { return 0; }
+    })();
+    html += `<div class="profile-card" onclick="selectProfile('${p.id}')">
+      <button class="profile-delete" onclick="event.stopPropagation();deleteProfile('${p.id}')" title="Excluir perfil">✕</button>
+      <div class="profile-avatar" style="${profileAvatarStyle(i)}">${profileInitials(p.name)}</div>
+      <div class="profile-name">${p.name}</div>
+      <div class="profile-info">${items} itens · ${histV} vendas</div>
+    </div>`;
+  });
+  // Botão novo perfil
+  html += `<div class="profile-new" onclick="showCreateProfile()">
+    <div class="profile-new-icon">＋</div>
+    <span>Novo Perfil</span>
+  </div>`;
+  grid.innerHTML = html;
+}
+
+function showProfileScreen() {
+  renderProfileGrid();
+  document.getElementById('profile-screen').classList.remove('hidden');
+  document.getElementById('sidebar').style.display = 'none';
+  document.getElementById('main').style.display = 'none';
+  cancelCreateProfile();
+}
+
+function hideProfileScreen() {
+  document.getElementById('profile-screen').classList.add('hidden');
+  document.getElementById('sidebar').style.display = '';
+  document.getElementById('main').style.display = '';
+}
+
+function showCreateProfile() {
+  document.getElementById('profile-create-form').classList.add('visible');
+  setTimeout(()=>document.getElementById('new-profile-name').focus(), 50);
+}
+
+function cancelCreateProfile() {
+  document.getElementById('profile-create-form').classList.remove('visible');
+  document.getElementById('new-profile-name').value = '';
+}
+
+function createProfile() {
+  const name = document.getElementById('new-profile-name').value.trim();
+  if (!name) { document.getElementById('new-profile-name').focus(); return; }
+  const profiles = getProfiles();
+  const id = 'p' + Date.now();
+  profiles.push({ id, name, created: new Date().toLocaleDateString('pt-BR') });
+  saveProfiles(profiles);
+  cancelCreateProfile();
+  selectProfile(id);
+}
+
+function deleteProfile(id) {
+  const profiles = getProfiles();
+  const p = profiles.find(x=>x.id===id);
+  if (!p) return;
+  if (!confirm(`Excluir o perfil "${p.name}"? Todos os dados serão apagados!`)) return;
+  localStorage.removeItem(getProfileLS(id));
+  saveProfiles(profiles.filter(x=>x.id!==id));
+  renderProfileGrid();
+}
+
+function selectProfile(id) {
+  const profiles = getProfiles();
+  const p = profiles.find(x=>x.id===id);
+  if (!p) return;
+  setActiveProfileId(id);
+  // Update sidebar UI
+  const idx = profiles.indexOf(p);
+  const [a,b] = AVATAR_COLORS[idx % AVATAR_COLORS.length];
+  document.getElementById('sidebar-avatar').textContent = profileInitials(p.name);
+  document.getElementById('sidebar-avatar').style = `background: linear-gradient(135deg, ${a}, ${b});`;
+  document.getElementById('sidebar-profile-name').textContent = p.name;
+  // Load state for this profile
+  loadProfileState(id);
+  hideProfileScreen();
+}
+
+function loadProfileState(profileId) {
+  const lsKey = getProfileLS(profileId);
+  try {
+    const raw = localStorage.getItem(lsKey);
+    const parsed = raw ? JSON.parse(raw) : {};
+    const loaded = { ...DEFAULTS, ...parsed };
+    S.items = loaded.items;
+    S.tradeItems = loaded.tradeItems;
+    S.estoque = loaded.estoque;
+    S.vendas = loaded.vendas;
+    S.trocas = loaded.trocas;
+    S.farmVenda = loaded.farmVenda;
+    S.farmTroca = loaded.farmTroca;
+    S.entregas = loaded.entregas;
+    S.histVendas = loaded.histVendas;
+    S.histTrocas = loaded.histTrocas;
+    idCounter = loaded.idCounter || 1;
+  } catch(e) {
+    console.warn('Erro ao carregar perfil:', e);
+  }
+  // Re-render all
+  renderItems();
+  renderTradeItems();
+  refreshAllSelects();
+  updateBadge();
+}
+
+// ============================
+// PERSISTÊNCIA LOCAL (localStorage)
+// ============================
+const LS_KEY = 'kalishop_v1'; // fallback only
+function currentLS() {
+  const pid = getActiveProfileId();
+  return pid ? getProfileLS(pid) : LS_KEY;
+}
+
+const DEFAULTS = {
+  items: [],
+  tradeItems: [],
+  estoque: {},
+  vendas: [],
+  trocas: [],
+  farmVenda: [],
+  farmTroca: [],
+  entregas: [],
+  histVendas: [],
+  histTrocas: [],
+  idCounter: 1,
+};
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(currentLS());
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      return { ...DEFAULTS, ...parsed };
+    }
+  } catch(e) { console.warn('Erro ao carregar estado:', e); }
+  return { ...DEFAULTS };
+}
+
+function saveState() {
+  try {
+    const toSave = {
+      items: S.items,
+      tradeItems: S.tradeItems,
+      estoque: S.estoque,
+      vendas: S.vendas,
+      trocas: S.trocas,
+      farmVenda: S.farmVenda,
+      farmTroca: S.farmTroca,
+      entregas: S.entregas,
+      histVendas: S.histVendas,
+      histTrocas: S.histTrocas,
+      idCounter: idCounter,
+    };
+    localStorage.setItem(currentLS(), JSON.stringify(toSave));
+  } catch(e) { console.warn('Erro ao salvar estado:', e); }
+}
+
+// ============================
+// STATE
+// ============================
+const _loaded = loadState();
+const S = {
+  items: _loaded.items,
+  tradeItems: _loaded.tradeItems,
+  estoque: _loaded.estoque,
+  vendas: _loaded.vendas,
+  trocas: _loaded.trocas,
+  farmVenda: _loaded.farmVenda,
+  farmTroca: _loaded.farmTroca,
+  entregas: _loaded.entregas,
+  histVendas: _loaded.histVendas,
+  histTrocas: _loaded.histTrocas,
+  // Temporários (não persistidos)
+  calcVendaItems: [],
+  calcVendaCliente: '',
+  calcVendaId: '',
+  calcTrocaMyItems: [],
+  calcTrocaTheirItems: [],
+  calcTrocaPlayer: '',
+  calcTrocaId: '',
+  trMy: [], trTheir: [],
+  trocasMy: [], trocasTheir: [],
+  vendaCurrentItems: [],
+  trocaMy: [], trocaTheir: [],
+};
+
+let idCounter = _loaded.idCounter || 1;
+const uid = () => 'k' + (idCounter++);
+
+// Auto-save: intercepta qualquer mutação em S salvando após cada operação relevante
+// (chamado manualmente após cada ação que muda dados persistidos)
+function save() { saveState(); }
+const fmt = (n) => {
+  if (n >= 1e9) return (n/1e9).toFixed(2)+'B';
+  if (n >= 1e6) return (n/1e6).toFixed(2)+'kk';
+  if (n >= 1e3) return (n/1e3).toFixed(1)+'k';
+  return Math.round(n).toString();
+};
+
+function notify(msg, color='gold') {
+  const el = document.getElementById('notif');
+  el.textContent = msg;
+  el.style.borderColor = color==='green'?'var(--green)':color==='red'?'var(--red)':'var(--gold)';
+  el.style.color = color==='green'?'var(--green2)':color==='red'?'var(--red2)':'var(--gold2)';
+  el.style.display = 'block';
+  setTimeout(()=>el.style.display='none', 2500);
+}
+
+// ============================
+// NAVIGATION
+// ============================
+function goTo(id) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  const page = document.getElementById('page-'+id);
+  if(page) page.classList.add('active');
+  event.currentTarget && event.currentTarget.classList.add('active');
+  // Refresh page
+  const refreshMap = {
+    'estoque': refreshEstoque,
+    'vendas': refreshVendaSelects,
+    'trocas': refreshTrocaSelects,
+    'farm-venda': renderFarmVenda,
+    'farm-troca': renderFarmTroca,
+    'entrega-venda': renderEntregaVenda,
+    'entrega-troca': renderEntregaTroca,
+    'hist-vendas': renderHistVendas,
+    'hist-trocas': renderHistTrocas,
+    'total': renderTotal,
+    'calc-venda': refreshCalcVendaSelects,
+    'calc-troca': refreshCalcTrocaSelects,
+  };
+  if(refreshMap[id]) refreshMap[id]();
+}
+// Override nav clicks
+document.querySelectorAll('.nav-item').forEach(el=>{
+  el.addEventListener('click', function(){
+    document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+
+// ============================
+// REGISTRO DE ITENS
+// ============================
+function addItem() {
+  const nome = document.getElementById('ri-nome').value.trim();
+  const farm = parseFloat(document.getElementById('ri-farm').value)||0;
+  const valor = parseFloat(document.getElementById('ri-valor').value)||0;
+  const unidade = document.getElementById('ri-unidade').value.trim()||'—';
+  if(!nome){notify('Informe o nome do item','red');return;}
+  if(!valor){notify('Informe o valor do item','red');return;}
+  S.items.push({id:uid(), nome, farm, valor, unidade});
+  document.getElementById('ri-nome').value='';
+  document.getElementById('ri-farm').value='';
+  document.getElementById('ri-valor').value='';
+  document.getElementById('ri-unidade').value='';
+  save();
+  renderItems();
+  refreshAllSelects();
+  notify('Item cadastrado!');
+}
+
+function removeItem(id) {
+  S.items = S.items.filter(i=>i.id!==id);
+  save();
+  renderItems();
+  refreshAllSelects();
+}
+
+function renderItems() {
+  const el = document.getElementById('ri-list');
+  if(!S.items.length){el.innerHTML='<div class="empty"><div class="empty-icon">📦</div>Nenhum item cadastrado</div>';return;}
+  el.innerHTML = '<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Item</th><th>Farm/un</th><th>Valor/un</th><th></th></tr></thead><tbody>'+
+    S.items.map(i=>`<tr>
+      <td><strong>${i.nome}</strong> <span style="color:var(--text3);font-size:0.7rem">${i.unidade !== '—' ? '🌿 '+i.unidade : ''}</span></td>
+      <td><span class="chip chip-teal">${fmt(i.farm)}</span></td>
+      <td><span class="chip chip-gold">${fmt(i.valor)}</span></td>
+      <td><button class="btn btn-red btn-xs" onclick="removeItem('${i.id}')">✕</button></td>
+    </tr>`).join('')+'</tbody></table></div>';
+}
+
+// ============================
+// REGISTRO TROCAS
+// ============================
+function addTradeItem() {
+  const nome = document.getElementById('rt-nome').value.trim();
+  const valor = parseFloat(document.getElementById('rt-valor').value)||0;
+  const cat = document.getElementById('rt-cat').value.trim()||'Geral';
+  if(!nome){notify('Informe o nome','red');return;}
+  S.tradeItems.push({id:uid(), nome, valor, categoria:cat});
+  document.getElementById('rt-nome').value='';
+  document.getElementById('rt-valor').value='';
+  document.getElementById('rt-cat').value='';
+  save();
+  renderTradeItems();
+  refreshAllSelects();
+  notify('Item de troca cadastrado!','green');
+}
+
+function removeTradeItem(id) {
+  S.tradeItems = S.tradeItems.filter(i=>i.id!==id);
+  save();
+  renderTradeItems();
+  refreshAllSelects();
+}
+
+function renderTradeItems() {
+  const el = document.getElementById('rt-list');
+  if(!S.tradeItems.length){el.innerHTML='<div class="empty"><div class="empty-icon">🔄</div>Nenhum item cadastrado</div>';return;}
+  el.innerHTML = '<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Item</th><th>Categoria</th><th>Valor</th><th></th></tr></thead><tbody>'+
+    S.tradeItems.map(i=>`<tr>
+      <td><strong>${i.nome}</strong></td>
+      <td><span class="chip chip-purple">${i.categoria}</span></td>
+      <td><span class="chip chip-gold">${fmt(i.valor)}</span></td>
+      <td><button class="btn btn-red btn-xs" onclick="removeTradeItem('${i.id}')">✕</button></td>
+    </tr>`).join('')+'</tbody></table></div>';
+}
+
+// ============================
+// ESTOQUE
+// ============================
+function refreshEstoque() {
+  const sel = document.getElementById('est-item');
+  sel.innerHTML = '<option value="">Selecione um item...</option>';
+  S.items.forEach(i=>sel.innerHTML+=`<option value="${i.id}">${i.nome}</option>`);
+  renderEstoque();
+}
+
+function addEstoque() {
+  const id = document.getElementById('est-item').value;
+  const qtd = parseFloat(document.getElementById('est-qtd').value)||0;
+  if(!id){notify('Selecione um item','red');return;}
+  if(!qtd){notify('Informe a quantidade','red');return;}
+  S.estoque[id] = (S.estoque[id]||0) + qtd;
+  document.getElementById('est-qtd').value='';
+  save();
+  renderEstoque();
+  notify('Estoque atualizado!');
+}
+
+function removeEstoque(id, qtd) {
+  const atual = S.estoque[id]||0;
+  const rem = parseFloat(prompt(`Remover quantos? (Disponível: ${atual})`,'')) || 0;
+  if(rem<=0||rem>atual){notify('Quantidade inválida','red');return;}
+  S.estoque[id] = atual - rem;
+  if(S.estoque[id]<=0) delete S.estoque[id];
+  save();
+  renderEstoque();
+  notify('Estoque atualizado!');
+}
+
+function renderEstoque() {
+  const el = document.getElementById('est-list');
+  const entries = Object.entries(S.estoque).filter(([k,v])=>v>0);
+  if(!entries.length){el.innerHTML='<div class="empty"><div class="empty-icon">🏪</div>Estoque vazio</div>';return;}
+  el.innerHTML = '<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Item</th><th>Quantidade</th><th>Valor Unit.</th><th>Valor Total</th><th></th></tr></thead><tbody>'+
+    entries.map(([id,qtd])=>{
+      const item = S.items.find(i=>i.id===id)||{nome:'?',valor:0};
+      return `<tr>
+        <td><strong>${item.nome}</strong></td>
+        <td>${qtd} ${item.unidade||'un'}</td>
+        <td>${fmt(item.valor)}</td>
+        <td style="color:var(--gold2)"><strong>${fmt(item.valor*qtd)}</strong></td>
+        <td><button class="btn btn-red btn-xs" onclick="removeEstoque('${id}',${qtd})">-Remover</button></td>
+      </tr>`;
+    }).join('')+'</tbody></table></div>';
+}
+
+// ============================
+// REFRESH ALL SELECTS
+// ============================
+function refreshAllSelects() {
+  refreshVendaSelects();
+  refreshTrocaSelects();
+  refreshCalcVendaSelects();
+  refreshCalcTrocaSelects();
+  const ests = document.getElementById('est-item');
+  if(ests) {
+    ests.innerHTML = '<option value="">Selecione um item...</option>';
+    S.items.forEach(i=>ests.innerHTML+=`<option value="${i.id}">${i.nome}</option>`);
+  }
+}
+
+function refreshVendaSelects() {
+  const s = document.getElementById('v-item-sel');
+  if(!s)return;
+  s.innerHTML = '<option value="">Selecione item...</option>';
+  S.items.forEach(i=>s.innerHTML+=`<option value="${i.id}">${i.nome} — ${fmt(i.valor)}</option>`);
+
+  const my = document.getElementById('tr-my-sel');
+  if(my){
+    my.innerHTML='<option value="">Meu item...</option>';
+    S.items.forEach(i=>my.innerHTML+=`<option value="${i.id}">${i.nome}</option>`);
+  }
+  const their = document.getElementById('tr-their-sel');
+  if(their){
+    their.innerHTML='<option value="">Item deles...</option>';
+    S.tradeItems.forEach(i=>their.innerHTML+=`<option value="${i.id}">${i.nome}</option>`);
+  }
+  renderTrocaBalance();
+}
+
+function refreshTrocaSelects() {
+  const my = document.getElementById('tr-my-sel');
+  if(my){
+    my.innerHTML='<option value="">Meu item...</option>';
+    S.items.forEach(i=>my.innerHTML+=`<option value="${i.id}">${i.nome}</option>`);
+  }
+  const their = document.getElementById('tr-their-sel');
+  if(their){
+    their.innerHTML='<option value="">Item deles...</option>';
+    S.tradeItems.forEach(i=>their.innerHTML+=`<option value="${i.id}">${i.nome}</option>`);
+  }
+}
+
+function refreshCalcVendaSelects() {
+  ['cv-item-sel','cv-add-item'].forEach(sid=>{
+    const s=document.getElementById(sid);
+    if(!s)return;
+    s.innerHTML='<option value="">Selecione...</option>';
+    S.items.forEach(i=>s.innerHTML+=`<option value="${i.id}">${i.nome} — ${fmt(i.valor)}</option>`);
+  });
+}
+
+function refreshCalcTrocaSelects() {
+  const my=document.getElementById('ct-my-item');
+  if(my){my.innerHTML='<option value="">Selecione meu item...</option>';S.items.forEach(i=>my.innerHTML+=`<option value="${i.id}">${i.nome}</option>`);}
+  const their=document.getElementById('ct-their-item');
+  if(their){their.innerHTML='<option value="">Selecione item deles...</option>';S.tradeItems.forEach(i=>their.innerHTML+=`<option value="${i.id}">${i.nome}</option>`);}
+}
+
+// ============================
+// CALCULADORA VENDAS
+// ============================
+function calcVenda() {
+  const budget = parseFloat(document.getElementById('cv-budget').value)||0;
+  const itemId = document.getElementById('cv-item-sel').value;
+  const desc = parseFloat(document.getElementById('cv-desc').value)||0;
+  if(!budget||!itemId){notify('Preencha valor e item','red');return;}
+  const item = S.items.find(i=>i.id===itemId);
+  if(!item)return;
+  const precoFinal = item.valor * (1 - desc/100);
+  const qtd = Math.floor(budget / precoFinal);
+  const total = qtd * precoFinal;
+  const farmTotal = qtd * item.farm;
+  const el = document.getElementById('cv-result');
+  el.innerHTML = `
+    <div class="grid-2" style="gap:10px;margin-bottom:10px;">
+      <div class="stat-card"><div class="stat-val">${qtd}</div><div class="stat-label">Quantidade</div></div>
+      <div class="stat-card"><div class="stat-val" style="font-size:1rem">${fmt(total)}</div><div class="stat-label">Valor Total</div></div>
+      <div class="stat-card"><div class="stat-val" style="color:var(--teal2);font-size:1rem">${fmt(farmTotal)}</div><div class="stat-label">Farm Necessário</div></div>
+      <div class="stat-card"><div class="stat-val" style="color:var(--red2);font-size:1rem">${fmt(budget-total)}</div><div class="stat-label">Troco</div></div>
+    </div>
+    <div style="font-size:0.8rem;color:var(--text3)">Preço unitário c/ desconto: ${fmt(precoFinal)} | Desconto: ${desc}%</div>
+  `;
+}
+
+S.calcVendaItems = [];
+function addCalcVendaItem() {
+  const itemId = document.getElementById('cv-add-item').value;
+  const qtd = parseFloat(document.getElementById('cv-add-qtd').value)||1;
+  if(!itemId){notify('Selecione um item','red');return;}
+  const item = S.items.find(i=>i.id===itemId);
+  if(!item)return;
+  const existing = S.calcVendaItems.find(x=>x.itemId===itemId);
+  if(existing){existing.qtd+=qtd;}
+  else S.calcVendaItems.push({itemId, nome:item.nome, qtd, valor:item.valor, farm:item.farm, descItem:0});
+  document.getElementById('cv-add-qtd').value='';
+  renderCalcVendaList();
+}
+
+function renderCalcVendaList() {
+  const el = document.getElementById('cv-item-list');
+  if(!S.calcVendaItems.length){el.innerHTML='';document.getElementById('cv-total-result').innerHTML='';return;}
+  let subtotal=0, farmTotal=0;
+  el.innerHTML = S.calcVendaItems.map((x,i)=>{
+    const val = x.valor*x.qtd*(1-x.descItem/100);
+    subtotal += val;
+    farmTotal += x.farm*x.qtd;
+    return `<div class="calc-list-item">
+      <span style="flex:2"><strong>${x.nome}</strong></span>
+      <span>x${x.qtd}</span>
+      <input type="number" placeholder="Desc item%" value="${x.descItem}" min="0" max="100"
+        onchange="S.calcVendaItems[${i}].descItem=parseFloat(this.value)||0;renderCalcVendaList()"
+        style="width:80px">
+      <span style="color:var(--gold2);font-weight:600">${fmt(val)}</span>
+      <button class="btn btn-red btn-xs" onclick="S.calcVendaItems.splice(${i},1);renderCalcVendaList()">✕</button>
+    </div>`;
+  }).join('');
+  document.getElementById('cv-total-result').innerHTML=`
+    <div class="flex gap-12" style="padding:10px;background:var(--bg4);border-radius:6px;">
+      <div><span style="color:var(--text3);font-size:0.75rem">SUBTOTAL</span><br><strong style="color:var(--gold2)">${fmt(subtotal)}</strong></div>
+      <div><span style="color:var(--text3);font-size:0.75rem">FARM TOTAL</span><br><strong style="color:var(--teal2)">${fmt(farmTotal)}</strong></div>
+    </div>`;
+}
+
+function moveCalcToVenda() {
+  if(!S.calcVendaItems.length){notify('Lista vazia','red');return;}
+  const cliente = document.getElementById('cv-cliente').value.trim();
+  const cid = document.getElementById('cv-id').value.trim();
+  // pre-fill venda page
+  S._pendingVendaItems = [...S.calcVendaItems];
+  S._pendingVendaCliente = cliente;
+  S._pendingVendaId = cid;
+  clearCalcVenda();
+  goTo('vendas');
+  setTimeout(()=>{
+    if(S._pendingVendaItems){
+      document.getElementById('v-cliente').value = S._pendingVendaCliente||'';
+      document.getElementById('v-id').value = S._pendingVendaId||'';
+      S.vendaCurrentItems = S._pendingVendaItems.map(x=>({itemId:x.itemId,qtd:x.qtd,descItem:x.descItem||0}));
+      delete S._pendingVendaItems;
+      renderVendaItems();
+      notify('Itens transferidos para Vendas!','green');
+    }
+  },100);
+}
+
+function clearCalcVenda() {
+  S.calcVendaItems=[];
+  renderCalcVendaList();
+  document.getElementById('cv-result').innerHTML='<div class="empty"><div class="empty-icon">🧮</div>Preencha os campos e calcule</div>';
+}
+
+// ============================
+// CALCULADORA TROCAS
+// ============================
+function addCtMyItem() {
+  const itemId = document.getElementById('ct-my-item').value;
+  const qtd = parseFloat(document.getElementById('ct-my-qtd').value)||1;
+  const prio = document.getElementById('ct-my-prio').checked;
+  const prioVal = document.getElementById('ct-my-prio-val').value.trim();
+  if(!itemId){notify('Selecione meu item','red');return;}
+  const item = S.items.find(i=>i.id===itemId);
+  if(!item)return;
+  S.calcTrocaMyItems.push({itemId,nome:item.nome,qtd,valor:item.valor,farm:item.farm,prio,prioVal});
+  renderCtMyList();
+}
+
+function addCtTheirItem() {
+  const itemId = document.getElementById('ct-their-item').value;
+  const qtd = parseFloat(document.getElementById('ct-their-qtd').value)||1;
+  const prio = document.getElementById('ct-their-prio').checked;
+  const prioVal = document.getElementById('ct-their-prio-val').value.trim();
+  if(!itemId){notify('Selecione item deles','red');return;}
+  const item = S.tradeItems.find(i=>i.id===itemId);
+  if(!item)return;
+  S.calcTrocaTheirItems.push({itemId,nome:item.nome,qtd,valor:item.valor,prio,prioVal});
+  renderCtTheirList();
+}
+
+function renderCtMyList() {
+  const el = document.getElementById('ct-my-list');
+  el.innerHTML = S.calcTrocaMyItems.map((x,i)=>`
+    <div class="calc-list-item">
+      ${x.prio?`<span class="priority-badge">★ +${x.prioVal||'0'}</span>`:''}
+      <strong style="flex:2">${x.nome}</strong>
+      <span>x${x.qtd}</span>
+      <span style="color:var(--gold2)">${fmt(x.valor*x.qtd)}</span>
+      <button class="btn btn-red btn-xs" onclick="S.calcTrocaMyItems.splice(${i},1);renderCtMyList()">✕</button>
+    </div>`).join('') || '<div style="color:var(--text3);font-size:0.8rem;padding:8px">Nenhum item adicionado</div>';
+}
+
+function renderCtTheirList() {
+  const el = document.getElementById('ct-their-list');
+  el.innerHTML = S.calcTrocaTheirItems.map((x,i)=>`
+    <div class="calc-list-item">
+      ${x.prio?`<span class="priority-badge" style="background:var(--teal)">★ +${x.prioVal||'0'}</span>`:''}
+      <strong style="flex:2">${x.nome}</strong>
+      <span>x${x.qtd}</span>
+      <span style="color:var(--teal2)">${fmt(x.valor*x.qtd)}</span>
+      <button class="btn btn-red btn-xs" onclick="S.calcTrocaTheirItems.splice(${i},1);renderCtTheirList()">✕</button>
+    </div>`).join('') || '<div style="color:var(--text3);font-size:0.8rem;padding:8px">Nenhum item adicionado</div>';
+}
+
+function calcTroca() {
+  const myTotal = S.calcTrocaMyItems.reduce((s,x)=>{
+    let v = x.valor*x.qtd;
+    if(x.prio && x.prioVal){
+      const p = x.prioVal.toString();
+      if(p.endsWith('%')) v *= (1+parseFloat(p)/100);
+      else v += parseFloat(p)*x.valor||0;
+    }
+    return s+v;
+  },0);
+  const theirTotal = S.calcTrocaTheirItems.reduce((s,x)=>{
+    let v = x.valor*x.qtd;
+    if(x.prio && x.prioVal){
+      const p = x.prioVal.toString();
+      if(p.endsWith('%')) v *= (1+parseFloat(p)/100);
+      else v += parseFloat(p)*x.valor||0;
+    }
+    return s+v;
+  },0);
+  const diff = myTotal - theirTotal;
+  const balanced = Math.abs(diff) < myTotal*0.05;
+  const el = document.getElementById('ct-result');
+  el.innerHTML = `
+    <div class="grid-3" style="margin-bottom:12px;">
+      <div class="stat-card"><div class="stat-val" style="font-size:1rem">${fmt(myTotal)}</div><div class="stat-label">Meus Itens</div></div>
+      <div class="stat-card"><div class="stat-val" style="font-size:1rem;color:var(--teal2)">${fmt(theirTotal)}</div><div class="stat-label">Itens Deles</div></div>
+      <div class="stat-card"><div class="stat-val" style="font-size:1rem;color:${balanced?'var(--green2)':diff>0?'var(--gold2)':'var(--red2)'}">${diff>0?'+':''}${fmt(diff)}</div><div class="stat-label">Diferença</div></div>
+    </div>
+    <div style="padding:10px;background:var(--bg4);border-radius:6px;font-size:0.85rem;color:${balanced?'var(--green2)':diff>0?'var(--gold2)':'var(--red2)'}">
+      ${balanced?'✅ Troca equilibrada!':diff>0?`⚠️ Você está dando ${fmt(diff)} a mais que receberá.`:`⚠️ Você receberá ${fmt(-diff)} a menos que dará.`}
+    </div>`;
+}
+
+function moveCalcToTroca() {
+  if(!S.calcTrocaMyItems.length){notify('Adicione seus itens','red');return;}
+  S._pendingTrocaMy = [...S.calcTrocaMyItems];
+  S._pendingTrocaTheir = [...S.calcTrocaTheirItems];
+  S._pendingTrocaPlayer = document.getElementById('ct-player').value;
+  S._pendingTrocaId = document.getElementById('ct-id').value;
+  clearCalcTroca();
+  goTo('trocas');
+  setTimeout(()=>{
+    if(S._pendingTrocaMy){
+      document.getElementById('tr-player').value = S._pendingTrocaPlayer||'';
+      document.getElementById('tr-id').value = S._pendingTrocaId||'';
+      S.trocaMy = S._pendingTrocaMy.map(x=>({itemId:x.itemId,qtd:x.qtd}));
+      S.trocaTheir = S._pendingTrocaTheir.map(x=>({itemId:x.itemId,qtd:x.qtd}));
+      delete S._pendingTrocaMy;
+      renderTrocaMyList();
+      renderTrocaTheirList();
+      notify('Itens transferidos para Trocas!','green');
+    }
+  },100);
+}
+
+function clearCalcTroca() {
+  S.calcTrocaMyItems=[];S.calcTrocaTheirItems=[];
+  renderCtMyList();renderCtTheirList();
+  document.getElementById('ct-result').innerHTML='<div class="empty"><div class="empty-icon">⚖️</div>Adicione itens e calcule</div>';
+}
+
+// ============================
+// VENDAS PAGE
+// ============================
+if(!S.vendaCurrentItems) S.vendaCurrentItems = [];
+
+function addVendaItem() {
+  if(!S.vendaCurrentItems) S.vendaCurrentItems=[];
+  const itemId = document.getElementById('v-item-sel').value;
+  const qtd = parseFloat(document.getElementById('v-item-qtd').value)||1;
+  if(!itemId){notify('Selecione um item','red');return;}
+  const item = S.items.find(i=>i.id===itemId);
+  if(!item)return;
+  const ex = S.vendaCurrentItems.find(x=>x.itemId===itemId);
+  if(ex) ex.qtd+=qtd; else S.vendaCurrentItems.push({itemId,qtd,descItem:0});
+  document.getElementById('v-item-qtd').value='';
+  renderVendaItems();
+}
+
+function renderVendaItems() {
+  if(!S.vendaCurrentItems) S.vendaCurrentItems=[];
+  const el = document.getElementById('v-items-list');
+  if(!S.vendaCurrentItems.length){el.innerHTML='';recalcVenda();return;}
+  el.innerHTML = S.vendaCurrentItems.map((x,i)=>{
+    const item=S.items.find(it=>it.id===x.itemId)||{nome:'?',valor:0,farm:0};
+    return `<div class="calc-list-item">
+      <strong style="flex:2">${item.nome}</strong>
+      <span>x${x.qtd}</span>
+      <div style="display:flex;align-items:center;gap:4px;font-size:0.75rem;color:var(--text3)">
+        Desc item%:
+        <input type="number" value="${x.descItem}" min="0" max="100" style="width:60px"
+          onchange="S.vendaCurrentItems[${i}].descItem=parseFloat(this.value)||0;renderVendaItems()">
+      </div>
+      <span style="color:var(--gold2)">${fmt(item.valor*x.qtd*(1-x.descItem/100))}</span>
+      <button class="btn btn-red btn-xs" onclick="S.vendaCurrentItems.splice(${i},1);renderVendaItems()">✕</button>
+    </div>`;
+  }).join('');
+  recalcVenda();
+}
+
+function recalcVenda() {
+  if(!S.vendaCurrentItems) S.vendaCurrentItems=[];
+  let sub=0, farm=[];
+  S.vendaCurrentItems.forEach(x=>{
+    const item=S.items.find(i=>i.id===x.itemId)||{valor:0,farm:0,nome:'?'};
+    sub += item.valor*x.qtd*(1-(x.descItem||0)/100);
+    if(item.farm>0) farm.push(`${item.nome}: ${fmt(item.farm*x.qtd)}`);
+  });
+  const desc = parseFloat(document.getElementById('v-desc-total').value)||0;
+  const total = sub*(1-desc/100);
+  document.getElementById('v-subtotal').textContent = fmt(sub);
+  document.getElementById('v-total-final').textContent = fmt(total);
+  document.getElementById('v-farm-total').textContent = farm.length ? farm.join(' | ') : '—';
+}
+
+function finalizarVenda() {
+  if(!S.vendaCurrentItems) S.vendaCurrentItems=[];
+  if(!S.vendaCurrentItems.length){notify('Adicione itens à venda','red');return;}
+  const cliente = document.getElementById('v-cliente').value.trim()||'Sem nome';
+  const cid = document.getElementById('v-id').value.trim()||'—';
+  const descTotal = parseFloat(document.getElementById('v-desc-total').value)||0;
+  let subtotal=0, farmItems=[];
+  const items = S.vendaCurrentItems.map(x=>{
+    const item=S.items.find(i=>i.id===x.itemId)||{valor:0,farm:0,nome:'?',unidade:'un'};
+    const val = item.valor*x.qtd*(1-(x.descItem||0)/100);
+    subtotal+=val;
+    farmItems.push({nome:item.nome,qtd:x.qtd,farmUnit:item.farm,farmTotal:item.farm*x.qtd,farmDone:false,fabDone:false,unidade:item.unidade||'un'});
+    return {...x, nomeCached:item.nome, valUnit:item.valor, farmUnit:item.farm};
+  });
+  const total = subtotal*(1-descTotal/100);
+  const vid = uid();
+  const venda = {id:vid, cliente, clienteId:cid, items, descTotal, subtotal, total, ts:new Date().toLocaleString('pt-BR'), status:'farm'};
+  S.vendas.push(venda);
+  S.farmVenda.push({vendaId:vid, cliente, clienteId:cid, items:farmItems, status:'farmando', ts:venda.ts});
+  // deduct estoque
+  S.vendaCurrentItems.forEach(x=>{
+    if(S.estoque[x.itemId]) S.estoque[x.itemId]=Math.max(0,(S.estoque[x.itemId]||0)-x.qtd);
+  });
+  S.vendaCurrentItems=[];
+  document.getElementById('v-cliente').value='';
+  document.getElementById('v-id').value='';
+  document.getElementById('v-desc-total').value='';
+  save();
+  renderVendaItems();
+  renderVendasAberto();
+  notify('Venda registrada! → Indo para Farm','green');
+}
+
+function renderVendasAberto() {
+  const el = document.getElementById('v-open-list');
+  const open = S.vendas.filter(v=>v.status!=='finalizado');
+  if(!open.length){el.innerHTML='<div class="empty"><div class="empty-icon">💰</div>Nenhuma venda em aberto</div>';return;}
+  el.innerHTML = open.map(v=>`
+    <div class="card" style="margin-bottom:8px;">
+      <div class="flex flex-between flex-center">
+        <div><strong>${v.cliente}</strong> <span style="color:var(--text3);font-size:0.75rem">ID: ${v.clienteId}</span></div>
+        <div><span class="chip chip-gold">${fmt(v.total)}</span> <span class="chip chip-teal">${v.status}</span></div>
+      </div>
+      <div style="font-size:0.78rem;color:var(--text3);margin-top:4px">${v.ts}</div>
+    </div>`).join('');
+}
+
+// ============================
+// TROCAS PAGE
+// ============================
+if(!S.trocaMy) S.trocaMy=[];
+if(!S.trocaTheir) S.trocaTheir=[];
+
+function addTrocaMy() {
+  if(!S.trocaMy) S.trocaMy=[];
+  const itemId = document.getElementById('tr-my-sel').value;
+  const qtd = parseFloat(document.getElementById('tr-my-qtd').value)||1;
+  if(!itemId){notify('Selecione um item','red');return;}
+  const ex = S.trocaMy.find(x=>x.itemId===itemId);
+  if(ex) ex.qtd+=qtd; else S.trocaMy.push({itemId,qtd});
+  renderTrocaMyList();
+}
+
+function addTrocaTheir() {
+  if(!S.trocaTheir) S.trocaTheir=[];
+  const itemId = document.getElementById('tr-their-sel').value;
+  const qtd = parseFloat(document.getElementById('tr-their-qtd').value)||1;
+  if(!itemId){notify('Selecione um item','red');return;}
+  const ex = S.trocaTheir.find(x=>x.itemId===itemId);
+  if(ex) ex.qtd+=qtd; else S.trocaTheir.push({itemId,qtd});
+  renderTrocaTheirList();
+}
+
+function renderTrocaMyList() {
+  if(!S.trocaMy) S.trocaMy=[];
+  const el = document.getElementById('tr-my-list');
+  el.innerHTML = S.trocaMy.map((x,i)=>{
+    const item = S.items.find(it=>it.id===x.itemId)||{nome:'?',valor:0,farm:0};
+    return `<div class="calc-list-item">
+      <strong style="flex:2">${item.nome}</strong>
+      <span>x${x.qtd}</span>
+      <span style="color:var(--gold2)">${fmt(item.valor*x.qtd)}</span>
+      <button class="btn btn-red btn-xs" onclick="S.trocaMy.splice(${i},1);renderTrocaMyList();renderTrocaBalance()">✕</button>
+    </div>`;
+  }).join('') || '<div style="color:var(--text3);font-size:0.8rem;padding:8px">Nenhum item</div>';
+  renderTrocaBalance();
+}
+
+function renderTrocaTheirList() {
+  if(!S.trocaTheir) S.trocaTheir=[];
+  const el = document.getElementById('tr-their-list');
+  el.innerHTML = S.trocaTheir.map((x,i)=>{
+    const item = S.tradeItems.find(it=>it.id===x.itemId)||{nome:'?',valor:0};
+    return `<div class="calc-list-item">
+      <strong style="flex:2">${item.nome}</strong>
+      <span>x${x.qtd}</span>
+      <span style="color:var(--teal2)">${fmt(item.valor*x.qtd)}</span>
+      <button class="btn btn-red btn-xs" onclick="S.trocaTheir.splice(${i},1);renderTrocaTheirList();renderTrocaBalance()">✕</button>
+    </div>`;
+  }).join('') || '<div style="color:var(--text3);font-size:0.8rem;padding:8px">Nenhum item</div>';
+  renderTrocaBalance();
+}
+
+function renderTrocaBalance() {
+  if(!S.trocaMy||!S.trocaTheir){return;}
+  const el=document.getElementById('tr-balance');
+  if(!el)return;
+  const myT = (S.trocaMy||[]).reduce((s,x)=>{const i=S.items.find(it=>it.id===x.itemId)||{valor:0};return s+i.valor*x.qtd;},0);
+  const thT = (S.trocaTheir||[]).reduce((s,x)=>{const i=S.tradeItems.find(it=>it.id===x.itemId)||{valor:0};return s+i.valor*x.qtd;},0);
+  const diff=myT-thT;
+  el.innerHTML=`Meus itens: <strong style="color:var(--gold2)">${fmt(myT)}</strong> | Itens deles: <strong style="color:var(--teal2)">${fmt(thT)}</strong> | Diferença: <strong style="color:${Math.abs(diff)<myT*0.05?'var(--green2)':diff>0?'var(--red2)':'var(--green2)'}">${fmt(diff)}</strong>`;
+}
+
+function finalizarTroca() {
+  if(!S.trocaMy||!S.trocaTheir){notify('Adicione itens','red');return;}
+  if(!S.trocaMy.length){notify('Adicione seus itens','red');return;}
+  const player = document.getElementById('tr-player').value.trim()||'Sem nome';
+  const pid = document.getElementById('tr-id').value.trim()||'—';
+  const tid = uid();
+  const farmItems = S.trocaMy.map(x=>{
+    const item=S.items.find(i=>i.id===x.itemId)||{nome:'?',farm:0,unidade:'un'};
+    return {nome:item.nome,qtd:x.qtd,farmUnit:item.farm,farmTotal:item.farm*x.qtd,farmDone:false,fabDone:false,unidade:item.unidade||'un'};
+  });
+  S.trocas.push({id:tid,player,playerId:pid,myItems:[...S.trocaMy],theirItems:[...S.trocaTheir],ts:new Date().toLocaleString('pt-BR'),status:'farm'});
+  S.farmTroca.push({trocaId:tid,player,playerId:pid,items:farmItems,status:'farmando',ts:new Date().toLocaleString('pt-BR')});
+  S.trocaMy=[];S.trocaTheir=[];
+  document.getElementById('tr-player').value='';
+  document.getElementById('tr-id').value='';
+  save();
+  renderTrocaMyList();renderTrocaTheirList();
+  renderTrocasAberto();
+  notify('Troca registrada! → Indo para Farm','green');
+  updateBadge();
+}
+
+function renderTrocasAberto() {
+  const el=document.getElementById('tr-open-list');
+  if(!el)return;
+  const open=S.trocas.filter(t=>t.status!=='finalizado');
+  if(!open.length){el.innerHTML='<div class="empty"><div class="empty-icon">🤝</div>Nenhuma troca em aberto</div>';return;}
+  el.innerHTML=open.map(t=>`
+    <div class="card" style="margin-bottom:8px;">
+      <div class="flex flex-between flex-center">
+        <div><strong>${t.player}</strong> <span style="color:var(--text3);font-size:0.75rem">ID: ${t.playerId}</span></div>
+        <span class="chip chip-teal">${t.status}</span>
+      </div>
+      <div style="font-size:0.78rem;color:var(--text3);margin-top:4px">${t.ts}</div>
+    </div>`).join('');
+}
+
+function updateBadge() {
+  const open = S.trocas.filter(t=>t.status!=='finalizado').length;
+  const b=document.getElementById('badge-trocas');
+  if(open>0){b.style.display='';b.textContent=open;}else b.style.display='none';
+}
+
+// ============================
+// FARM VENDA
+// ============================
+function renderFarmVenda() {
+  const el = document.getElementById('fv-list');
+  const ativos = S.farmVenda.filter(f=>f.status==='farmando');
+  if(!ativos.length){el.innerHTML='<div class="empty"><div class="empty-icon">⛏️</div>Nenhuma encomenda de venda em produção</div>';return;}
+  el.innerHTML = ativos.map(f=>`
+    <div class="card" style="margin-bottom:12px;">
+      <div class="flex flex-between flex-center" style="margin-bottom:12px;">
+        <div><span style="font-family:Cinzel,serif;color:var(--gold2)">${f.cliente}</span> <span style="color:var(--text3);font-size:0.75rem">ID: ${f.clienteId}</span></div>
+        <div style="font-size:0.75rem;color:var(--text3)">${f.ts}</div>
+      </div>
+      ${f.items.map((it,i)=>`
+        <div class="check-row ${it.farmDone&&it.fabDone?'done':''}">
+          <div style="flex:2"><strong>${it.nome}</strong> <span style="color:var(--text3)">x${it.qtd}</span></div>
+          <div style="font-size:0.75rem;color:var(--teal2)">Farm: ${fmt(it.farmTotal)}</div>
+          <label style="display:flex;align-items:center;gap:4px;margin:0;font-size:0.75rem;color:var(--text2)">
+            <input type="checkbox" ${it.farmDone?'checked':''} onchange="toggleFarmVenda('${f.vendaId}',${i},'farm',this.checked)"> Farmado
+          </label>
+          <label style="display:flex;align-items:center;gap:4px;margin:0;font-size:0.75rem;color:var(--text2)">
+            <input type="checkbox" ${it.fabDone?'checked':''} onchange="toggleFarmVenda('${f.vendaId}',${i},'fab',this.checked)"> Fabricado
+          </label>
+        </div>`).join('')}
+      <div style="margin-top:10px;text-align:right;">
+        <button class="btn btn-green btn-sm" onclick="completeFarmVenda('${f.vendaId}')">✓ Concluído → Entrega</button>
+      </div>
+    </div>`).join('');
+}
+
+function toggleFarmVenda(vid,idx,type,val) {
+  const f = S.farmVenda.find(x=>x.vendaId===vid);
+  if(!f)return;
+  if(type==='farm') f.items[idx].farmDone=val;
+  else f.items[idx].fabDone=val;
+  save();
+  renderFarmVenda();
+}
+
+function completeFarmVenda(vid) {
+  const f = S.farmVenda.find(x=>x.vendaId===vid);
+  if(!f)return;
+  const allDone = f.items.every(i=>i.farmDone&&i.fabDone);
+  if(!allDone){if(!confirm('Nem todos os itens foram marcados. Continuar mesmo assim?'))return;}
+  f.status='entrega';
+  S.entregas.push({tipo:'venda',refId:vid,player:f.cliente,playerId:f.clienteId,myDone:false,ts:f.ts});
+  save();
+  renderFarmVenda();
+  notify('Venda pronta para entrega!','green');
+}
+
+// ============================
+// FARM TROCA
+// ============================
+function renderFarmTroca() {
+  const el = document.getElementById('ft-list');
+  const ativos = S.farmTroca.filter(f=>f.status==='farmando');
+  if(!ativos.length){el.innerHTML='<div class="empty"><div class="empty-icon">🌾</div>Nenhuma troca em produção</div>';return;}
+  el.innerHTML = ativos.map(f=>`
+    <div class="card" style="margin-bottom:12px;">
+      <div class="flex flex-between flex-center" style="margin-bottom:12px;">
+        <div><span style="font-family:Cinzel,serif;color:var(--teal2)">${f.player}</span> <span style="color:var(--text3);font-size:0.75rem">ID: ${f.playerId}</span></div>
+        <div style="font-size:0.75rem;color:var(--text3)">${f.ts}</div>
+      </div>
+      ${f.items.map((it,i)=>`
+        <div class="check-row ${it.farmDone&&it.fabDone?'done':''}">
+          <div style="flex:2"><strong>${it.nome}</strong> <span style="color:var(--text3)">x${it.qtd}</span></div>
+          <div style="font-size:0.75rem;color:var(--teal2)">Farm: ${fmt(it.farmTotal)}</div>
+          <label style="display:flex;align-items:center;gap:4px;margin:0;font-size:0.75rem;color:var(--text2)">
+            <input type="checkbox" ${it.farmDone?'checked':''} onchange="toggleFarmTroca('${f.trocaId}',${i},'farm',this.checked)"> Farmado
+          </label>
+          <label style="display:flex;align-items:center;gap:4px;margin:0;font-size:0.75rem;color:var(--text2)">
+            <input type="checkbox" ${it.fabDone?'checked':''} onchange="toggleFarmTroca('${f.trocaId}',${i},'fab',this.checked)"> Fabricado
+          </label>
+        </div>`).join('')}
+      <div style="margin-top:10px;text-align:right;">
+        <button class="btn btn-green btn-sm" onclick="completeFarmTroca('${f.trocaId}')">✓ Concluído → Entrega</button>
+      </div>
+    </div>`).join('');
+}
+
+function toggleFarmTroca(tid,idx,type,val) {
+  const f = S.farmTroca.find(x=>x.trocaId===tid);
+  if(!f)return;
+  if(type==='farm') f.items[idx].farmDone=val;
+  else f.items[idx].fabDone=val;
+  save();
+  renderFarmTroca();
+}
+
+function completeFarmTroca(tid) {
+  const f = S.farmTroca.find(x=>x.trocaId===tid);
+  if(!f)return;
+  const allDone = f.items.every(i=>i.farmDone&&i.fabDone);
+  if(!allDone){if(!confirm('Nem todos os itens foram marcados. Continuar?'))return;}
+  f.status='entrega';
+  S.entregas.push({tipo:'troca',refId:tid,player:f.player,playerId:f.playerId,myDone:false,theirDone:false,ts:f.ts});
+  save();
+  renderFarmTroca();
+  notify('Troca pronta para entrega!','green');
+}
+
+// ============================
+// ENTREGA VENDA
+// ============================
+function renderEntregaVenda() {
+  const el = document.getElementById('ev-list');
+  const pendentes = S.entregas.filter(e=>e.tipo==='venda'&&!e.myDone);
+  if(!pendentes.length){el.innerHTML='<div class="empty"><div class="empty-icon">📬</div>Nenhuma venda aguardando entrega</div>';return;}
+  el.innerHTML = pendentes.map(e=>`
+    <div class="card" style="margin-bottom:10px;">
+      <div class="flex flex-between flex-center">
+        <div><strong>${e.player}</strong> <span style="color:var(--text3);font-size:0.75rem">ID: ${e.playerId}</span></div>
+        <div style="font-size:0.75rem;color:var(--text3)">${e.ts}</div>
+      </div>
+      <div class="check-row" style="margin-top:10px;">
+        <input type="checkbox" ${e.myDone?'checked':''} onchange="marcarEntregaVenda('${e.refId}',this.checked)">
+        <span>Entregue ao cliente</span>
+        ${e.myDone?'<span class="chip chip-green">✓ Entregue</span>':'<span class="chip chip-red">Pendente</span>'}
+      </div>
+    </div>`).join('');
+}
+
+function marcarEntregaVenda(refId, val) {
+  const e = S.entregas.find(x=>x.refId===refId&&x.tipo==='venda');
+  if(!e)return;
+  e.myDone=val;
+  if(val) {
+    const venda = S.vendas.find(v=>v.id===refId);
+    if(venda){venda.status='finalizado';S.histVendas.push({...venda,finTs:new Date().toLocaleString('pt-BR')});}
+    save();
+    setTimeout(()=>{renderEntregaVenda();renderHistVendas();},300);
+    notify('Venda finalizada e registrada no histórico!','green');
+  } else { save(); renderEntregaVenda(); }
+}
+
+// ============================
+// ENTREGA TROCA
+// ============================
+function renderEntregaTroca() {
+  const el = document.getElementById('et-list');
+  const pendentes = S.entregas.filter(e=>e.tipo==='troca'&&!(e.myDone&&e.theirDone));
+  if(!pendentes.length){el.innerHTML='<div class="empty"><div class="empty-icon">📮</div>Nenhuma troca aguardando entrega</div>';return;}
+  el.innerHTML = pendentes.map(e=>`
+    <div class="card" style="margin-bottom:10px;">
+      <div class="flex flex-between flex-center">
+        <div><strong>${e.player}</strong> <span style="color:var(--text3);font-size:0.75rem">ID: ${e.playerId}</span></div>
+        <div style="font-size:0.75rem;color:var(--text3)">${e.ts}</div>
+      </div>
+      <div class="check-row" style="margin-top:10px;">
+        <input type="checkbox" ${e.myDone?'checked':''} onchange="marcarEntregaTroca('${e.refId}','my',this.checked)">
+        <span>Minha entrega realizada</span>
+        ${e.myDone?'<span class="chip chip-green">✓</span>':'<span class="chip chip-red">Pendente</span>'}
+      </div>
+      <div class="check-row">
+        <input type="checkbox" ${e.theirDone?'checked':''} onchange="marcarEntregaTroca('${e.refId}','their',this.checked)">
+        <span>Entrega do player recebida</span>
+        ${e.theirDone?'<span class="chip chip-green">✓</span>':'<span class="chip chip-red">Pendente</span>'}
+      </div>
+    </div>`).join('');
+}
+
+function marcarEntregaTroca(refId, side, val) {
+  const e = S.entregas.find(x=>x.refId===refId&&x.tipo==='troca');
+  if(!e)return;
+  if(side==='my') e.myDone=val; else e.theirDone=val;
+  if(e.myDone&&e.theirDone) {
+    const troca = S.trocas.find(t=>t.id===refId);
+    if(troca){troca.status='finalizado';S.histTrocas.push({...troca,finTs:new Date().toLocaleString('pt-BR')});}
+    save();
+    setTimeout(()=>{renderEntregaTroca();renderHistTrocas();updateBadge();},300);
+    notify('Troca finalizada!','green');
+  } else { save(); renderEntregaTroca(); }
+}
+
+// ============================
+// HISTÓRICO
+// ============================
+function renderHistVendas() {
+  const el=document.getElementById('hv-list');
+  const total=S.histVendas.reduce((s,v)=>s+v.total,0);
+  document.getElementById('hv-total-vendas').textContent=S.histVendas.length;
+  document.getElementById('hv-total-valor').textContent=fmt(total);
+  document.getElementById('hv-media').textContent=S.histVendas.length?fmt(total/S.histVendas.length):'0';
+  if(!S.histVendas.length){el.innerHTML='<div class="empty"><div class="empty-icon">📜</div>Nenhuma venda finalizada ainda</div>';return;}
+  el.innerHTML='<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Cliente</th><th>ID</th><th>Total</th><th>Desconto</th><th>Data</th></tr></thead><tbody>'+
+    [...S.histVendas].reverse().map(v=>`<tr>
+      <td><strong>${v.cliente}</strong></td>
+      <td style="color:var(--text3)">${v.clienteId}</td>
+      <td><span class="chip chip-gold">${fmt(v.total)}</span></td>
+      <td>${v.descTotal||0}%</td>
+      <td style="color:var(--text3);font-size:0.75rem">${v.finTs||v.ts}</td>
+    </tr>`).join('')+'</tbody></table></div>';
+}
+
+function renderHistTrocas() {
+  const el=document.getElementById('ht-list');
+  document.getElementById('ht-total').textContent=S.histTrocas.length;
+  if(!S.histTrocas.length){el.innerHTML='<div class="empty"><div class="empty-icon">📋</div>Nenhuma troca finalizada ainda</div>';return;}
+  el.innerHTML='<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Player</th><th>ID</th><th>Meus Itens</th><th>Itens Deles</th><th>Data</th></tr></thead><tbody>'+
+    [...S.histTrocas].reverse().map(t=>{
+      const myItens = (t.myItems||[]).map(x=>{const i=S.items.find(it=>it.id===x.itemId)||{nome:'?'};return `${i.nome} x${x.qtd}`;}).join(', ');
+      const theirItens = (t.theirItems||[]).map(x=>{const i=S.tradeItems.find(it=>it.id===x.itemId)||{nome:'?'};return `${i.nome} x${x.qtd}`;}).join(', ');
+      return `<tr>
+        <td><strong>${t.player}</strong></td>
+        <td style="color:var(--text3)">${t.playerId}</td>
+        <td style="font-size:0.8rem">${myItens||'—'}</td>
+        <td style="font-size:0.8rem">${theirItens||'—'}</td>
+        <td style="color:var(--text3);font-size:0.75rem">${t.finTs||t.ts}</td>
+      </tr>`;
+    }).join('')+'</tbody></table></div>';
+}
+
+// ============================
+// TOTAL
+// ============================
+function renderTotal() {
+  const totalFat = S.histVendas.reduce((s,v)=>s+v.total,0);
+  document.getElementById('tot-faturamento').textContent = fmt(totalFat);
+  document.getElementById('tot-vendas').textContent = S.histVendas.length;
+  document.getElementById('tot-trocas').textContent = S.histTrocas.length;
+  document.getElementById('tot-itens').textContent = S.items.length;
+
+  // Produção
+  const farmV = S.farmVenda.filter(f=>f.status==='farmando');
+  const farmT = S.farmTroca.filter(f=>f.status==='farmando');
+  const totProd = document.getElementById('tot-producao');
+  totProd.innerHTML = (farmV.length+farmT.length)===0
+    ? '<div class="empty"><div class="empty-icon">⚡</div>Sem produção ativa</div>'
+    : `${farmV.map(f=>`<div class="check-row"><span>🔨 Venda</span> <strong>${f.cliente}</strong></div>`).join('')}
+       ${farmT.map(f=>`<div class="check-row"><span>🌾 Troca</span> <strong>${f.player}</strong></div>`).join('')}`;
+
+  // Estoque
+  const totEst = document.getElementById('tot-estoque');
+  const estEntries = Object.entries(S.estoque).filter(([k,v])=>v>0);
+  totEst.innerHTML = estEntries.length===0
+    ? '<div class="empty"><div class="empty-icon">🏪</div>Estoque vazio</div>'
+    : estEntries.map(([id,qtd])=>{
+        const item=S.items.find(i=>i.id===id)||{nome:'?',valor:0};
+        return `<div class="check-row"><strong>${item.nome}</strong> <span>x${qtd}</span> <span style="color:var(--gold2)">${fmt(item.valor*qtd)}</span></div>`;
+      }).join('');
+
+  // Últimas transações
+  const todas = [
+    ...S.histVendas.map(v=>({tipo:'venda',nome:v.cliente,val:fmt(v.total),ts:v.finTs||v.ts})),
+    ...S.histTrocas.map(t=>({tipo:'troca',nome:t.player,val:'Troca',ts:t.finTs||t.ts}))
+  ].sort((a,b)=>b.ts>a.ts?1:-1).slice(0,10);
+  const totUlt = document.getElementById('tot-ultimas');
+  totUlt.innerHTML = todas.length===0
+    ? '<div class="empty"><div class="empty-icon">📊</div>Nenhuma transação ainda</div>'
+    : '<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Tipo</th><th>Player/Cliente</th><th>Valor</th><th>Data</th></tr></thead><tbody>'+
+      todas.map(t=>`<tr>
+        <td>${t.tipo==='venda'?'<span class="chip chip-gold">Venda</span>':'<span class="chip chip-teal">Troca</span>'}</td>
+        <td>${t.nome}</td>
+        <td>${t.val}</td>
+        <td style="color:var(--text3);font-size:0.75rem">${t.ts}</td>
+      </tr>`).join('')+'</tbody></table></div>';
+}
+
+// ============================
+// INIT
+// ============================
+window.addEventListener('load', ()=>{
+  const activeId = getActiveProfileId();
+  const profiles = getProfiles();
+  if (activeId && profiles.find(x=>x.id===activeId)) {
+    // Auto-load last used profile
+    selectProfile(activeId);
+  } else {
+    // Show profile picker
+    showProfileScreen();
+    // Still init state so renders don't crash
+    renderItems();
+    renderTradeItems();
+    refreshAllSelects();
+    updateBadge();
+  }
+});
+
+// ============================
+// BACKUP / RESET
+// ============================
+function exportarDados() {
+  const data = localStorage.getItem(currentLS())||'{}';
+  const pid = getActiveProfileId();
+  const profiles = getProfiles();
+  const p = profiles.find(x=>x.id===pid);
+  const nome = p ? p.name.replace(/\s+/g,'_') : 'perfil';
+  const blob = new Blob([data], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `kalishop_${nome}_${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  notify('Backup exportado!','green');
+}
+
+function importarDados() {
+  const input = document.createElement('input');
+  input.type='file'; input.accept='.json';
+  input.onchange = e => {
+    const file = e.target.files[0];
+    if(!file)return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      try {
+        const parsed = JSON.parse(ev.target.result);
+        localStorage.setItem(currentLS(), JSON.stringify(parsed));
+        notify('Backup importado! Recarregando...','green');
+        setTimeout(()=>location.reload(), 1000);
+      } catch(err) { notify('Arquivo inválido!','red'); }
+    };
+    reader.readAsText(file);
+  };
+  input.click();
+}
+
+function resetarDados() {
+  if(!confirm('⚠️ Apagar TODOS os dados deste perfil? Esta ação não pode ser desfeita!'))return;
+  if(!confirm('Tem certeza absoluta? Todos os itens, vendas, trocas e histórico serão apagados.'))return;
+  localStorage.removeItem(currentLS());
+  notify('Dados apagados. Recarregando...','red');
+  setTimeout(()=>location.reload(), 1000);
+}
+</script>
+</body>
+</html>
